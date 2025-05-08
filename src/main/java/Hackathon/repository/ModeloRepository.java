@@ -1,23 +1,12 @@
 package Hackathon.repository;
 
-import Hackathon.domain.Solicitud;
+import Hackathon.domain.Modelo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
+public interface ModeloRepository extends JpaRepository<Modelo, Long> {
+    Optional<Modelo> findByTipoModelo(String tipoModelo);
 
-    /**
-     * Sumar todos los tokens consumidos por un usuario específico.
-     * @param usuarioId ID del usuario.
-     * @return La suma total de tokens consumidos.
-     */
-    @Query("SELECT SUM(s.tokensConsumidos) FROM Solicitud s WHERE s.usuario.id = :usuarioId")
-    Integer sumTokensByUsuarioId(@Param("usuarioId") Long usuarioId);
-
-    List<Solicitud> findByUsuarioId(Long usuarioId);
+    boolean existsByTipoModelo(String gpt);
 }

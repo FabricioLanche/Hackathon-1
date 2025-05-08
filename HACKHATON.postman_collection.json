@@ -1,0 +1,1069 @@
+{
+	"info": {
+		"_postman_id": "ee0472db-1f90-42fe-a00a-f50562bc71dc",
+		"name": "HACKHATON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43509885",
+		"_collection_link": "https://dark-sunset-246817.postman.co/workspace/DBP~16941fd4-2fc3-45ac-91eb-0146a2c045ea/collection/43509885-ee0472db-1f90-42fe-a00a-f50562bc71dc?action=share&source=collection_link&creator=43509885"
+	},
+	"item": [
+		{
+			"name": "1.1) Logear - Sparky Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   // Extraer el token de la respuesta JSON\r",
+							"   var response = pm.response.json();\r",
+							"   var token = response.token; // Cambia 'token' por el atributo exacto que contiene tu token en la respuesta\r",
+							"\r",
+							"   // Guarda el token en una variable de entorno o de colección\r",
+							"   pm.collectionVariables.set(\"sparkyToken\", token); // Almacena el token en una variable de colección\r",
+							"   console.log(\"Token guardado: \" + token); // Opcional: imprime el token en la consola"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "     {\r\n         \"email\": \"superadmin@sparky.com\",\r\n         \"password\": \"admin123\"\r\n     }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.2) Crear Empresa - Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer {{sparkyToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"nombre\": \"Empresa ADBC\",\r\n    \"ruc\": \"12345678901\",\r\n    \"fechaAfiliacion\": \"2023-10-25\",\r\n    \"estadoActivo\": true,\r\n    \"administrador\": {\r\n      \"id\": 1,\r\n      \"nombre\": \"Juan Pérez\",\r\n      \"email\": \"admin@example.com\",\r\n      \"password\": \"password123\"\r\n    }\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/companies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.3) Empresas Registradas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{sparkyToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/companies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.4) Información Empresa",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{sparkyToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/companies/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"companies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.5) Actualizar Empresa",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{sparkyToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"nombre\": \"Empresa actualizada\",\r\n    \"ruc\": \"56789012345\",\r\n    \"fechaAfiliacion\": \"2023-10-30\",\r\n    \"estadoActivo\": false,\r\n    \"administrador\": {\r\n        \"id\": 2,\r\n        \"nombre\": \"Juan Pérez\",\r\n        \"email\": \"admin@example.com\",\r\n        \"password\": null\r\n    }\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/companies/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"companies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.6) Activar/desactivar empresa",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{sparkyToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  false",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/companies/:id/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"companies",
+						":id",
+						"status"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1) Logear - Company Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   // Extraer el token de la respuesta JSON\r",
+							"   var response = pm.response.json();\r",
+							"   var token = response.token; // Cambia 'token' por el atributo exacto que contiene tu token en la respuesta\r",
+							"\r",
+							"   // Guarda el token en una variable de entorno o de colección\r",
+							"   pm.collectionVariables.set(\"adminToken\", token); // Almacena el token en una variable de colección\r",
+							"   console.log(\"Token guardado: \" + token); // Opcional: imprime el token en la consola"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "     {\r\n        \"email\": \"admin@example.com\",\r\n        \"password\": \"password123\"\r\n     } ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2) Nueva Restricción Empresa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"empresaId\": 1,\r\n    \"modeloId\": 1,\r\n    \"limiteSolicitudes\": 100,\r\n    \"limiteTokensGlobal\": 5000,\r\n    \"ventanaTiempo\": \"24h\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/restrictions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"restrictions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.3) Listar Restriciones Empresas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/restrictions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"restrictions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.4) Actualizar Restriccion",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"empresaId\": 10,\r\n    \"modeloId\": 1,\r\n    \"limiteSolicitudes\": 150,\r\n    \"limiteTokensGlobal\": 7000,\r\n    \"ventanaTiempo\": \"48h\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/restrictions/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"restrictions",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.5) Eliminar Restriccion",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/company/restrictions/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"restrictions",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.1) Crear Usuario Empresa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rol\": \"ROLE_USER\",\r\n    \"password\": \"password123\",\r\n    \"nombre\": \"John Doe\",\r\n    \"email\": \"johndoe@example.com\",\r\n    \"empresaId\": 1 \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.2) Listar Usuarios Empresa",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/company/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.3) Información Usuario",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/company/users/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.4) Actualizar Información Usuario",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"John Smith\",\r\n    \"email\": \"johnsmith@example.com\",\r\n    \"empresaId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/users/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.5) Asignar Límite Usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"limiteSolicitudes\": 100,\r\n    \"limiteTokensGlobal\": 500,\r\n    \"ventanaTiempo\": \"30d\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/company/users/:id/limits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users",
+						":id",
+						"limits"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.6) Reporte de consumo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/company/users/:id/consumption",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"users",
+						":id",
+						"consumption"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.1) Logear - User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   // Extraer el token de la respuesta JSON\r",
+							"   var response = pm.response.json();\r",
+							"   var token = response.token; // Cambia 'token' por el atributo exacto que contiene tu token en la respuesta\r",
+							"\r",
+							"   // Guarda el token en una variable de entorno o de colección\r",
+							"   pm.collectionVariables.set(\"userToken\", token); // Almacena el token en una variable de colección\r",
+							"   console.log(\"Token guardado: \" + token); // Opcional: imprime el token en la consola"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"email\": \"johnsmith@example.com\",\r\n        \"password\": \"password123\"\r\n    } ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2) GPT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"GPT\",\r\n    \"texto\": \"Hola\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2) DEEPSECK",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"DEEPSEEK-R1\",\r\n    \"texto\": \"Hola\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2) META",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"META\",\r\n    \"texto\": \"Hola\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3) GPT Completion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"GPT\",\r\n    \"texto\": \"Había una vez...\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/completion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"completion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3) DEEPSECK Completion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"DEEPSEEK-R1\",\r\n    \"texto\": \"Había una vez...\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/completion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"completion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3) META Completion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"META\",\r\n    \"texto\": \"Había una vez...\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/completion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"completion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.4) MAVERICK",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"modelo\": \"MAVERICK\",\r\n    \"texto\": \"R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/multimodal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"multimodal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.5) Listar Modelos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/models",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.6) Obtener Historial",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/ai/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ai",
+						"history"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "sparkyToken",
+			"value": ""
+		},
+		{
+			"key": "userToken",
+			"value": ""
+		}
+	]
+}

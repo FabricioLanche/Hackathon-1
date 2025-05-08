@@ -1,14 +1,12 @@
 package Hackathon.repository;
 
-import Hackathon.domain.Usuario;
+import Hackathon.domain.Empresa;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Optional<Usuario> findByEmail(String email);
-    Optional<Usuario> findById(Long id);
-    List<Usuario> findByEmpresaId(Long empresaId);
-    boolean existsByEmail(String email);
+@Repository
+public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
+    boolean existsByRuc(String ruc);
 }
